@@ -1,0 +1,99 @@
+body, html {
+    height: 100%;
+
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+.signup {
+    width: 320px; 
+    padding: 20px;
+    background-color: rgb(253, 253, 252);
+    border-radius: 25px;
+
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.signup h1 {
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+form label, form input {
+    width: 100%;
+    margin-bottom: 5px;
+    font-size: large;
+}
+
+form input {
+    height: 30px;
+    padding: 5px;
+    box-sizing: border-box;
+    border: none;
+    border: 1px solid gray;
+    border-radius: 6px;
+    outline: none;
+}
+
+
+.signup form input[type="submit"] {
+    margin-top: 20px;
+    color: white;
+    background-color: #ff5100;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    border: none; 
+    padding: 3px; 
+    text-align: center; 
+    text-decoration: none; 
+    height: 30px;
+}
+
+a {
+    text-decoration: none; 
+    display: block; 
+    width: 100%; 
+}
+
+p{
+    display: block;
+}
+
+.or{
+    text-align: center;
+}
+
+.login{
+    height: fit-content;
+}
+
+.links{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.links button{
+    margin-bottom: 15px;
+    color:black;
+    background-color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+}

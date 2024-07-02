@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="/static/css/Home.css">
+    <script src="/static/js/header.js"></script>
+</head>
+<body>
+    <header>
+        <div class="main-header">
+            <div class="logo">
+                <h1><a href="{{url_for('home')}}"><img src="/static/foodlogo.gif"></a></h1>
+            </div>
+            <nav>
+                <ul>
+                <li><a href="{{url_for('home')}}">Home</a></li>
+                <li><a href="{{url_for('show_menu')}}">Menu</a></li>
+                <li><a href="{{url_for('reservation')}}">Reservation</a></li>
+                <li><a href="#contact">Contact us</a></li>
+                <li><a href="#about">About us</a></li>
+                <li><a href="{{url_for('cart')}}" id="cart-icon"><img src="/static/shopping-cart.gif"></a></li>
+            <li>
+                <a href="{{ url_for('logout') }}"><input type="button" value="Logout"/></a>
+            </li>
+                </ul>``
+            </nav>
+        </div>
+    </header>
+
+    
+    <section id="first_section" class="first_section">
+        <div class="hs1">
+            <div class="hs10">
+                <div class="hs11">
+                    <p>Discover a unique experience.</p>
+                </div>
+                <div class="hs12">
+                    <p>We provide best food in town, we provide home <br>delivery and dine in services.</p>
+                </div>
+                <div class="hs13">
+                    <a href="{{url_for('show_menu')}}"><input type="button" value="Order now"/></a>
+                    <a href="{{url_for('reservation')}}"><input type="button" value="Reservation"/></a>
+                </div>
+            </div>
+            <div class="home-img">
+                <img src="/static/resta.jpg">
+            </div>
+        </div>
+    </section>
+
+    
+    <section id="second_section" class="second_section">
+        <div class="hs2">
+            <div class="home-img">
+    
+                <img src="/static/main2.png">
+            </div>
+            <div class="hs20">
+                <div class="hs21">
+                    <p>Our Most
+                        <br>Popular <br> Dish.</p>
+                </div>
+                <div class="hs22">
+                    <p >This dish is full of flavor and nutrition! <br>Quinoa is a complete protein, providing all <br>the essential amino acids your body needs, <br>and is also a good source of fiber.</p>
+                </div>
+                <div class="hs23">
+                    <a href="{{url_for('show_menu')}}"><input type="button" value="Order now"/></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+  
+    <section>
+        <div class="hs4">
+            <div class="hs41">
+                <h2 style="font-size: xxx-large;">Hungry? We are open now...</h2>
+            </div>
+            <div class="hs42">
+                <a href="{{url_for('show_menu')}}"><input type="button" value="Order now"/></a>
+                <a href="{{url_for('reservation')}}"><input type="button" value="Reservation"/></a>
+            </div>
+        </div>
+    </section>
+
+    <section class="about" id="about">
+        <div class="container">
+            <h2 style="font-size:xxx-large;">Our Journey and Inspiration</h2>
+            <div class="content">
+                <p style="font-size:x-large;">At Foodie, we are dedicated to creating unique culinary experiences that<br>set us apart. Our journey is fueled by passion, innovation, and a love for food.</p>
+            </div>
+            <div class="columns">
+                <div class="column">
+                    <h3 style="font-size:x-large;">Our Roots</h3>
+                    <p style="font-size:large;">Inspired by a love for fresh, local ingredients, Foodie was born out of a desire to bring unique flavors to our community.</p>
+                </div>
+                <div class="column">
+                    <h3 style="font-size:x-large;">Our Passion</h3>
+                    <p style="font-size:large;">Every dish we create is a labor of love, crafted with care and attention to detail to provide an unforgettable dining experience.</p>
+                </div>
+                <div class="column">
+                    <h3 style="font-size:x-large;">Our Uniqueness</h3>
+                    <p style="font-size:large;">We pride ourselves on offering innovative dishes that you won't find anywhere else, making each visit to Foodie a new adventure.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="column">
+                <img src="/static/logo.png" alt="Logo" style="height: 50px;">
+            </div>
+            <div class="column">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="{{url_for('show_menu')}}">Menu</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="column">
+                <h3>Explore</h3>
+                <ul>
+                    <li><a href="{{url_for('show_menu')}}">Menu</a></li>
+                    <li><a href="#about">About Us</a></li>
+                </ul>
+            </div>
+            <div class="column">
+                <h3>Contact</h3>
+                <ul>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="column">
+                <h3>Feedback</h3>
+                <form class="newsletter-form" action="https://api.web3forms.com/submit" method="POST">
+                    <input type="hidden" name="access_key" value="cddfd08b-60df-48a4-bfea-5553b187585b">
+                    <input type="text" name="name" placeholder="Enter your name" required>
+                    <input type="email" name="email" placeholder="Enter your email" required>
+                    <textarea name="message" placeholder="Enter your message" required></textarea>
+                    <input type="submit" value="Subscribe">
+                </form>
+            </div>
+        </div>
+        <div class="bottom-bar">
+            <div>
+                &copy; 2024 Foodie. All rights reserved by Nithin. | <a href="/terms">Terms of Service</a> | <a href="/privacy">Privacy Policy</a>
+            </div>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </section>
+    
+</body>
+</html>

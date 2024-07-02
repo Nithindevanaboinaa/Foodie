@@ -1,0 +1,142 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+#cart-icon-container {
+    text-align: right;
+    padding: 10px;
+}
+
+#cart-icon {
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+#cart-page {
+    display: none;
+    padding: 20px;
+}
+
+.hidden {
+    display: none;
+    display: flex;
+}
+
+#addresses {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.address {
+    border: 1px solid #ddd;
+    padding: 20px;
+    width: 30%;
+    box-sizing: border-box;
+}
+
+.address p {
+    margin: 5px 0;
+}
+
+.deliver-btn, .add-new-btn {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: green;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+#cart-details {
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+}
+
+#cart-details h3 {
+    margin-top: 0;
+}
+
+#cart-items {
+    list-style: none;
+    padding: 0;
+}
+
+#cart-items li {
+    margin-bottom: 10px;
+}
+
+#total-amount {
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+
+#snackbar {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 30px;
+    font-size: 17px;
+}
+
+#snackbar.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+
+
+.full{
+    display: flex;
+    gap: 200px;
+    
+    justify-content: space-around;
+}
+
+form{
+    display:flex;
+    flex-direction: column;
+}
+
+#address-form input{
+    border: 1px solid ;
+    border-color: #333;
+}
+
+
+#payment-options{
+    justify-content: space-between;
+}
+
+.proceed-btn{
+    display:flex;
+}
