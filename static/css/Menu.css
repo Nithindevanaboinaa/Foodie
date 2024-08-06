@@ -13,15 +13,27 @@ main {
 
 .categories {
     margin: 20px 0;
+    width: 100%;
+    justify-content: space-between;
 }
 
 .categories button {
-    background-color:#ff5100;
+    /* background-color: #ff5100;
     color: white;
     border: none;
     padding: 10px 20px;
     margin: 0 10px;
-    cursor: pointer;
+    cursor: pointer; */
+    margin-top: 10px;
+        padding: 10px 20px;
+        background-color: #ff5100;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        font-size: 16px;
+        margin: 0 10px;
+        
 }
 
 .categories button:hover {
@@ -76,18 +88,24 @@ main {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgb(0,0,0);
+    background-color:red;
     background-color: rgba(0,0,0,0.4);
 }
 
 .modal-content {
-    background-color: #fefefe;
+    background-color: red;
     margin: 15% auto;
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
-    max-width: 500px;
+    max-width: 400px;
     text-align: center;
+}
+
+.modal-content #modal-image{
+    width: 80%;
+    height: 300px;
+    border-radius: 10px;
 }
 
 .close-button {
@@ -116,5 +134,3 @@ main {
     width: 50px;
     text-align: center;
 }
-
-

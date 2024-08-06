@@ -1,42 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User List</title>
-    <link rel="stylesheet" href="/static/css/Admin.css">
-</head>
-<body>
+    <link rel="stylesheet" href="/static/css/addTocart.css" />
+  </head>
+  <body>
     <nav>
-        <ul class="nav_menu">
-            <li><a href="{{ url_for('show_menu') }}">Menu</a></li>
-            <li><a href="{{ url_for('admin') }}">Add Menu Item</a></li>
-            <li><a href="{{ url_for('users') }}">Users</a></li>
-        </ul>
+      <ul class="nav_menu">
+        <li><a href="{{ url_for('show_menu') }}">Menu</a></li>
+        <li><a href="{{ url_for('admin') }}">Add Menu Item</a></li>
+        <li><a href="{{ url_for('users') }}">Users</a></li>
+        <li><a href="{{ url_for('delete_item') }}">Delete Menu Item</a></li>
+      </ul>
     </nav>
-    <hr>
+    <hr />
     <h1>User List</h1>
-    <table>
-        <tr class="users_list">
-          <th>Name<br>Email</th>
-          <th>City</th>
-          <th>Booking Time</th>
-          <th>button</th>
-        </tr>
-       
-            {% for user in users %}
-            <tr class="users_list">
-            <td>{{ user['name'] }} <br>{{ user['email'] }}</td>
-            <td>{{ user['address']['address'] }}</td>
-            <td>{{ user['reservation']['time'] }}<br>{{ user['reservation']['date'] }}</td>
-            <td><a href="/user/{{ user['email'] }}">VIEW DETAILS</a></td>
-            </tr>
-            {% endfor %}
-      
-    </table>
-    
-</body>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users %}
+          <tr>
+            <td>{{ user['name'] }}</td>
+            <td>{{ user['email'] }}</td>
+            <td>
+              <a href="/user/{{ user['email'] }}" class="view-details-btn"
+                >VIEW DETAILS</a
+              >
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </body>
 </html>
-
-
-
