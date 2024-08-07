@@ -331,7 +331,7 @@ def fetch_addresses():
 # Admin Section
 
 ADMIN_EMAIL = 'admin@12'
-ADMIN_PASSWORD = 'a'
+ADMIN_PASSWORD = 'admin'
 
 @app.route('/admin_login')
 def admin_login():
@@ -386,17 +386,17 @@ def delete_item():
 
 @app.route('/delete_menu_item', methods=['POST'])
 def delete_menu_item():
-    data = request.get_json()
-    name = data.get('name')
+    name = request.form.get('name')
+    
     if not name:
         return jsonify(success=False, message="Item name is required"), 400
 
     result = menu_collection.delete_one({"name": name})
     
     if result.deleted_count > 0:
-        return jsonify({"status": "True", "message": "Successfully deleted"}), 200
+        return jsonify(success=True, message="Item deleted successfully")
     else:
-        return jsonify({"status": "error", "message": "Item not found"}), 404
+        return jsonify(success=False, message="Item not found"), 404
 
 @app.route('/users')
 def users():
@@ -412,7 +412,12 @@ def user_details(email):
         for cart in cart_items:
             items = cart.get('items', [])
             total_price = sum(int(item['price']) * int(item['quantity']) for item in items)
-            cart_groups.append({'items': items, 'total_price': total_price, 'time_and_date': cart.get('Time and Date')})
+            cart_groups.append({
+                'items': items,
+                'total_price': total_price,
+                'time_and_date': cart.get('Time and Date'),
+                'payment_method': cart.get('payment_method')
+            })
         return render_template('user_details.html', user=user, cart_groups=cart_groups)
     else:
         return "User not found", 404
@@ -539,51 +544,53 @@ from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
 
-def sendmsg(recipient_email, cart_items, total_price):
+def sendmsg(recipient_email, cart_items,total_price):    
+    # Generate OTP
+   
     # Generate the PDF
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial", size=12)
     
-    pdf.cell(200, 10, txt="", ln=True, align='C')  # Empty line
+    
+    
     pdf.cell(200, 10, txt="Your cart items:", ln=True, align='L')
     for item in cart_items:
         pdf.cell(200, 10, txt=f"{item['name']} - {item['quantity']} x {item['price']}", ln=True, align='L')
+        
     pdf.cell(200, 10, txt=f"Total Price: {total_price}", ln=True, align='L')
-
     # Save the PDF
     pdf_filename = "invoice.pdf"
     pdf.output(pdf_filename)
     
-    # Create the email body
-    body = "Please find attached your invoice and OTP."
-
     # Create the email
     msg = MIMEMultipart()
     msg['From'] = "bezzavarapupaulbabu@gmail.com"
     msg['To'] = recipient_email
     msg['Subject'] = "Your Invoice and OTP"
     
-    msg.attach(MIMEText(body, 'plain'))
+   
     
     # Attach the PDF
-    with open(pdf_filename, "rb") as attachment:
-        part = MIMEBase('application', 'octet-stream')
-        part.set_payload(attachment.read())
+    attachment = open(pdf_filename, "rb")
+    part = MIMEBase('application', 'octet-stream')
+    part.set_payload(attachment.read())
     encoders.encode_base64(part)
     part.add_header('Content-Disposition', f"attachment; filename={pdf_filename}")
     msg.attach(part)
+    attachment.close()
     
     # Send the email
     server = smtplib.SMTP("smtp.gmail.com", 587)
     server.starttls()
-    server.login("bezzavarapupaulbabu@gmail.com", "ftprgfaqioymlapq")
+    server.login("bezzavarapupaulbabu@gmail.com","ftprgfaqioymlapq")
     text = msg.as_string()
     server.sendmail("bezzavarapupaulbabu@gmail.com", recipient_email, text)
     server.quit()
     
     # Clean up the PDF file
     os.remove(pdf_filename)
+
 
 @app.route('/update_cart_quantity', methods=['POST'])
 def update_cart_quantity():
@@ -700,7 +707,3 @@ def get_feedback():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-
-

@@ -75,6 +75,10 @@ p {
     height: 40px;
 }
 
+.payment-options label{
+    font-size: 16px;
+}
+
 .address-card.add-new {
     cursor: pointer;
     text-align: center;

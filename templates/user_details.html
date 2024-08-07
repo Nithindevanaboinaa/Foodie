@@ -64,7 +64,10 @@
 
     <h2>Order Details</h2>
     {% for cart_group in cart_groups %}
-    <h3>Ordered on {{ cart_group['time_and_date'] }}</h3>
+    <h3>
+      Ordered on {{ cart_group['time_and_date'] }} (Payment Method: {{
+      cart_group['payment_method'] }})
+    </h3>
     <table>
       <thead>
         <tr>
