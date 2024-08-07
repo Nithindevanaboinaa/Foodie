@@ -119,7 +119,7 @@ def login_validate():
         email = request.form.get("email")
         password = request.form.get("password")
         if email=='admin@admin' and password=='a':
-            return redirect(url_for('add_menu_item'))
+            return render_template('admin_login.html')
         user = user_collection.find_one({"email": email, "password": password})
         if user:
             session['email'] = email
