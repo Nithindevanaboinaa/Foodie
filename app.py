@@ -335,8 +335,6 @@ ADMIN_PASSWORD = 'admin'
 
 @app.route('/admin')
 def admin():
-    if 'admin' in session:
-        return render_template("Admin.html")
     return redirect(url_for('admin_login'))
 
 @app.route('/admin_login_validate', methods=['POST'])
@@ -347,9 +345,9 @@ def admin_login_validate():
 
         if email == ADMIN_EMAIL and password == ADMIN_PASSWORD:
             session['admin'] = email
-            return redirect(url_for('admin'))
+            return redirect(url_for('add_menu_item'))
     
-    return "Invalid credentials", 403
+    return redirect(url_for('admin'))
 
 @app.route('/admin')
 def admin():
