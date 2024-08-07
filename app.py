@@ -118,8 +118,8 @@ def login_validate():
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")
-        if email=='admin@admin' and password=='admin':
-            return redirect(url_for('admin'))
+        if email=='admin@admin' and password=='a':
+            return redirect(url_for('add_menu_item'))
         user = user_collection.find_one({"email": email, "password": password})
         if user:
             session['email'] = email
@@ -331,13 +331,11 @@ def fetch_addresses():
 # Admin Section
 
 ADMIN_EMAIL = 'admin@12'
-ADMIN_PASSWORD = 'admin'
+ADMIN_PASSWORD = 'a'
 
-@app.route('/admin')
-def admin():
-    if 'admin' in session:
-        return render_template("Admin.html")
-    return redirect(url_for('admin_login'))
+@app.route('/admin_login')
+def admin_login():
+    return render_template("admin_login.html")
 
 @app.route('/admin_login_validate', methods=['POST'])
 def admin_login_validate():
@@ -414,12 +412,7 @@ def user_details(email):
         for cart in cart_items:
             items = cart.get('items', [])
             total_price = sum(int(item['price']) * int(item['quantity']) for item in items)
-            cart_groups.append({
-                'items': items,
-                'total_price': total_price,
-                'time_and_date': cart.get('Time and Date'),
-                'payment_method': cart.get('payment_method')
-            })
+            cart_groups.append({'items': items, 'total_price': total_price, 'time_and_date': cart.get('Time and Date')})
         return render_template('user_details.html', user=user, cart_groups=cart_groups)
     else:
         return "User not found", 404
