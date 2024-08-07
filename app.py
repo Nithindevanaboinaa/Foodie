@@ -333,9 +333,11 @@ def fetch_addresses():
 ADMIN_EMAIL = 'admin@12'
 ADMIN_PASSWORD = 'admin'
 
-@app.route('/admin_login')
-def admin_login():
-    return render_template("admin_login.html")
+@app.route('/admin')
+def admin():
+    if 'admin' in session:
+        return render_template("Admin.html")
+    return redirect(url_for('admin_login'))
 
 @app.route('/admin_login_validate', methods=['POST'])
 def admin_login_validate():
