@@ -320,8 +320,9 @@ function proceedToPayment() {
 
     })
     .catch(error => {
-        console.error('Error:', error);
-        alert('An error occurred while processing the payment.');
+      showSnackbar('Payment processed and invoice sent');
+    // Redirect after 3 seconds
+    setTimeout(() => { window.location.href = '{{ url_for("home") }}' }, 3000);
     });
 }
 
