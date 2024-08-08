@@ -279,7 +279,7 @@
         </div>
       </div>
     </section>
-
+    <br><br><br>
     <div class="slider-container">
       <button class="slider-button left" onclick="scrollLeft()">&#9664;</button>
       <div id="feedbackContainer" class="feedback-container"></div>
@@ -289,9 +289,12 @@
     </div>
     <section class="contact" id="contact">
       <div class="container">
-        <div class="column">
-          <img src="/static/logo.png" alt="Logo" style="height: 50px" />
+        <div class="logo">
+          <h1>
+            <a href="{{url_for('home')}}"><img src="/static/foodlogo.gif" /></a>
+          </h1>
         </div>
+
         <div class="column">
           <h3>Quick Links</h3>
           <ul>
@@ -313,6 +316,8 @@
             <li><a href="#contact">Contact</a></li>
           </ul>
         </div>
+
+
         <div class="column">
           <h3>Feedback</h3>
           <form id="ratingForm">
@@ -336,12 +341,12 @@
             <input type="button" value="Submit" onclick="submitFeedback()" />
           </form>
         </div>
-      </div>
+      </div
       <div class="bottom-bar">
         <div>
-          &copy; 2024 Foodie. All rights reserved by Nithin. |
-          <a href="/terms">Terms of Service</a> |
-          <a href="/privacy">Privacy Policy</a>
+          &copy; 2024 Foodie. All rights reserved by Nithin & Leela Deepak. |
+          Terms of Service |
+          Privacy Policy
         </div>
         <div class="social-icons">
           <a href="#"><i class="fab fa-facebook-f"></i></a>

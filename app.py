@@ -211,22 +211,29 @@ def clear_cart():
     return jsonify(success=True)
 
 @app.route('/remove_cart', methods=['POST'])
-def remove_cart():
-    item = request.json.get('name')  # Retrieve the name of the item to remove
-    email = session.get('email')
+def remove_cart_item():
+    if 'email' not in session:
+        return jsonify(success=False, message='User not logged in')
 
-    if not email:
-        return jsonify(success=False, message="User not logged in"), 401
+    data = request.json
+    item_name = data.get('name')
 
-    try:
-        user_collection.update_one(
-            {"email": email},
-            {"$pull": {"cart": {"name": item}}}
-        )
-        session['cart'] = [item for item in session.get('cart') if item['name'] != item]
-        return jsonify(success=True, message="Item removed")
-    except Exception as e:
-        return jsonify(success=False, message=str(e)), 500
+    if not item_name:
+        return jsonify(success=False, message='Item name is missing')
+
+    email = session['email']
+
+    # Attempt to remove the item from the user's cart using their email
+    result = db.users.update_one(
+        {'email': email},
+        {'$pull': {'cart': {'name': item_name}}}
+    )
+
+    if result.modified_count > 0:
+        return jsonify(success=True)
+    else:
+        return jsonify(success=False, message='Failed to remove item')
+
 
 @app.route('/cart')
 def cart():
@@ -333,9 +340,6 @@ def fetch_addresses():
 ADMIN_EMAIL = 'admin@12'
 ADMIN_PASSWORD = 'admin'
 
-@app.route('/admin')
-def admin():
-    return redirect(url_for('admin_login'))
 
 @app.route('/admin_login_validate', methods=['POST'])
 def admin_login_validate():
@@ -345,15 +349,15 @@ def admin_login_validate():
 
         if email == ADMIN_EMAIL and password == ADMIN_PASSWORD:
             session['admin'] = email
-            return redirect(url_for('add_menu_item'))
+            return render_template('Admin.html')
     
     return redirect(url_for('admin'))
 
 @app.route('/admin')
 def admin():
     if 'admin' in session:
-        return render_template("admin.html")
-    return redirect(url_for('admin_login'))
+        return render_template("Admin.html")
+    return redirect(url_for('admin_login_validate'))
 
 @app.route('/add_menu_item', methods=['POST'])
 def add_menu_item():
@@ -386,7 +390,7 @@ def delete_item():
 
 @app.route('/delete_menu_item', methods=['POST'])
 def delete_menu_item():
-    name = request.form.get('name')
+    name = request.json.get('name')
     
     if not name:
         return jsonify(success=False, message="Item name is required"), 400
@@ -416,7 +420,7 @@ def user_details(email):
                 'items': items,
                 'total_price': total_price,
                 'time_and_date': cart.get('Time and Date'),
-                'payment_method': cart.get('payment_method')
+                'payment_method': cart.get('payment_type')
             })
         return render_template('user_details.html', user=user, cart_groups=cart_groups)
     else:
@@ -474,7 +478,7 @@ def convert_objectid(o):
 
 @app.route('/past_orders')
 def past_orders():
-    email = session.get('email')  # Replace with the user's email
+    email = session.get('email')
     user = user_collection.find_one({"email": email})
 
     if not user:
@@ -483,13 +487,18 @@ def past_orders():
     past_orders = user.get('cart_items', [])
     past_orders = convert_objectid(past_orders)
 
+    # Add address to each order
     for order in past_orders:
+        order_address = order.get('address') or user.get('address')
+        order['address'] = order_address if order_address else {'dno': 'N/A', 'landmark': 'N/A', 'address': 'N/A'}
+        
         if order['items']:
             order['image'] = order['items'][0]['image']
         else:
             order['image'] = 'default-image.png'  # Fallback image
 
     return render_template('past_orders.html', past_orders=past_orders, user=user)
+
 
 @app.route('/reorder', methods=['POST'])
 def reorder():
@@ -522,6 +531,7 @@ def reorder():
     session['cart'] = local_cart
 
     return redirect(url_for('cart'))
+
 # @app.route('/cart')
 # def cart():
 #     if 'email' not in session:
@@ -594,62 +604,43 @@ def sendmsg(recipient_email, cart_items,total_price):
 
 @app.route('/update_cart_quantity', methods=['POST'])
 def update_cart_quantity():
-    data = request.get_json()
-    item_name = data.get('name')
-    new_quantity = data.get('quantity')
+    data = request.json
+    name = data.get('name')
+    quantity = data.get('quantity')
+    email = session.get('email')
     
-    if not item_name or new_quantity is None:
-        return jsonify({'success': False, 'message': 'Invalid data'}), 400
+    if not email:
+        return jsonify({'success': False, 'message': 'User not logged in'}), 401
+    
+    user = user_collection.find_one({"email": email})
+    if not user:
+        return jsonify({'success': False, 'message': 'User not found'}), 404
 
-    # Assuming the cart is stored in the session
-    cart = session.get('cart', [])
-    item_found = False
+    local_cart = user.get('cart', [])
+    if not local_cart:
+        return jsonify({'success': False, 'message': 'Cart is empty'}), 400
+    
+    for item in local_cart:
+        if item['name'] == name:
+            item['quantity'] = quantity
+    
+    try:
+        user_collection.update_one(
+            {"email": email},
+            {"$set": {"cart": local_cart}}
+        )
+        total_price = calculate_total_price()
+        return jsonify({'success': True, 'total_price': total_price})
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)}), 500
 
-    for item in cart:
-        if item['name'] == item_name:
-            item['quantity'] = int(new_quantity)  # Ensure quantity is an integer
-            item_found = True
-            break
-
-    if not item_found:
-        return jsonify({'success': False, 'message': 'Item not found'}), 404
-
-    session['cart'] = cart
-
-    # Calculate the new total price
-    total_price = sum(float(item['price']) * int(item['quantity']) for item in cart)
-
-    return jsonify({'success': True, 'total_price': total_price}), 200
-
-
-def calculate_total_price(payment_method):
+def calculate_total_price():
     email = session.get('email')
     user = user_collection.find_one({"email": email})
     if not user:
         return 0
-    
     local_cart = user.get('cart', [])
-    total_price = sum(item.get('price', 0) * item.get('quantity', 1) for item in local_cart)
-    
-    local_address = user.get('address', {})
-    global_cart = user.get("cart_items", [])
-    now = datetime.datetime.now()
-
-    if local_cart:
-        global_cart.append({
-            "items": local_cart,
-            "address": local_address,
-            "payment_type": payment_method,
-            "Time and Date": now.strftime("%d-%m-%y, %H:%M:%S"),
-            "total_price": total_price
-        })
-
-        # Update the user's global cart and clear the local cart
-        user_collection.update_one(
-            {"email": email},
-            {"$set": {"cart_items": global_cart, "cart": []}}
-        )
-
+    total_price = sum(int(item.get('price', 0)) * int(item.get('quantity', 1)) for item in local_cart)
     return total_price
 
 

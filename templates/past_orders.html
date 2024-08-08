@@ -13,7 +13,6 @@
         <h2>{{ user.name }}</h2>
         <p>{{ user.email }}</p>
       </div>
-
       <button class="edit-profile">Edit Profile</button>
     </div>
 
@@ -29,10 +28,16 @@
               class="order-image"
             />
             <div class="order-info">
-              {% if order['address'] %} Address: {{ order['address']['dno'] }}
-              {{ order['address']['landmark'] }} {{ user['address']['address']
-              }} {% else %} N/A {% endif %}
-              <p class="delivery-date style="color:#28a745;">
+              {% if order['address'] %}
+                <p>Address: 
+                  {% if order['address']['dno'] %}{{ order['address']['dno'] }}{% endif %}
+                  {% if order['address']['landmark'] %}{% if order['address']['dno'] %}, {% endif %}{{ order['address']['landmark'] }}{% endif %}
+                  {% if order['address']['address'] %}{% if order['address']['landmark'] or order['address']['dno'] %}, {% endif %}{{ order['address']['address'] }}{% endif %}
+                </p>
+              {% else %}
+                <p>Address: N/A</p>
+              {% endif %}
+              <p class="delivery-date" style="color:#28a745;">
                 ORDERED ON {{ order['Time and Date'] }}
               </p>
               {% for item in order['items'] %}
@@ -40,7 +45,7 @@
                 {{ item['name'] }} x{{ item['quantity'] }}
               </p>
               {% endfor %}
-              <p>Total Paid: ₹{{order['total_price']}}</p>
+              <p>Total Paid: ₹{{ order['total_price'] }}</p>
             </div>
           </div>
           <div class="order-actions">

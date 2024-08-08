@@ -81,7 +81,7 @@
           <p>price ₹{{ item['price'] }}</p>
           <button
             class="add-bt"
-            onclick="addToCartDirectly('{{ item['name'] }}', '{{ item['price'] }}', '{{ item['image'] }}')"
+            onclick="addToCartDirectly('{{ item.name }}', '{{ item.price }}', '{{ item.image }}')"
           >
             Add to Cart
           </button>
@@ -173,7 +173,7 @@
       }
 
       document.getElementById('cart-icon').addEventListener('click', () => {
-          window.location.href = '{{ url_for('cart') }}';
+        window.location.href = '/cart';
       });
     </script>
   </body>
